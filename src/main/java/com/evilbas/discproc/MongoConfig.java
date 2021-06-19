@@ -1,4 +1,4 @@
-package com.evilbas.discgm;
+package com.evilbas.discproc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "com.evilbas.discgm.dao.mongo")
+@EnableMongoRepositories(basePackages = "com.evilbas.discproc.dao.mongo")
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Autowired
@@ -41,6 +41,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     protected String getMappingBasePackage() {
-        return "com.evilbas.discgm.dao.mongo";
+        return "com.evilbas.discproc.dao.mongo";
     }
 }

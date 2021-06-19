@@ -1,4 +1,4 @@
-package com.evilbas.discgm.service;
+package com.evilbas.discproc.service;
 
 import java.util.Random;
 

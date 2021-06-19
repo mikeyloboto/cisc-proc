@@ -1,4 +1,4 @@
-package com.evilbas.discgm;
+package com.evilbas.discproc;
 
 import java.util.Collections;
 
@@ -26,7 +26,7 @@ public class App extends SpringBootServletInitializer {
     private static final Logger log = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) {
-        log.info("Starting DiscGM");
+        log.info("Starting DiscProc");
         SpringApplication.run(App.class, args);
     }
 

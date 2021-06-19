@@ -1,4 +1,4 @@
-package com.evilbas.discgm.dao.sql;
+package com.evilbas.discproc.dao.sql;
 
 import org.springframework.stereotype.Repository;
 

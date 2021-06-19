@@ -1,4 +1,4 @@
-package com.evilbas.discgm.dao.mongo;
+package com.evilbas.discproc.dao.mongo;
 
 import com.evilbas.rslengine.player.Player;
 

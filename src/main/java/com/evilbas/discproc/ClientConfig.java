@@ -1,4 +1,4 @@
-package com.evilbas.discgm;
+package com.evilbas.discproc;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -11,9 +11,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
 @PropertySources({ @PropertySource("classpath:application.properties"),
-		@PropertySource("file:${APPLICATION_EXT_PROPERTIES}/discgm-ws/env.properties") })
-@MapperScan("com.evilbas.discgm.dao.sql")
-@ComponentScan(basePackages = "com.evilbas.discgm")
+		@PropertySource("file:${APPLICATION_EXT_PROPERTIES}/discproc-ws/env.properties") })
+@MapperScan("com.evilbas.discproc.dao.sql")
+@ComponentScan(basePackages = "com.evilbas.discproc")
 @EnableAsync
 public class ClientConfig {
 

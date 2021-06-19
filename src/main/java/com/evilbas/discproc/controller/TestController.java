@@ -1,4 +1,4 @@
-package com.evilbas.discgm.controller;
+package com.evilbas.discproc.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
