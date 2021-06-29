@@ -10,16 +10,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class CharacterCreatorController {
+public class CombatController {
 
-    private static final Logger log = LoggerFactory.getLogger(CharacterCreatorController.class);
+    private static final Logger log = LoggerFactory.getLogger(CombatController.class);
 
     @Autowired
     DungeonInstanceService dungeonInstanceService;
 
-    @GetMapping(value = "/combat/")
+    @GetMapping(value = "/combat")
     public String startCombat(@RequestParam String guid) {
         dungeonInstanceService.startCombat(guid);
+        return "Success";
+    }
+
+    @GetMapping(value = "/combat/attack")
+    public String combatAttack(@RequestParam String guid, @RequestParam Integer targetSlot,
+            @RequestParam Integer spellSlot) {
+        dungeonInstanceService.combatAttack(guid, targetSlot, spellSlot);
         return "Success";
     }
 }

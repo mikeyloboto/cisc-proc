@@ -28,16 +28,6 @@ public class DungeonInstanceService {
         Character character = characterService.getCharacter(guid);
         character.setCurrentEncounter(generateMockEncounter());
         characterService.saveCharacter(character);
-        // if (instances == null) {
-        // log.info("Initializing instance map");
-        // instances = new HashMap<String, CombatInstance>();
-        // }
-
-        // log.info("Adding new instance for character {}.", guid);
-        // CombatInstance instance = new
-        // CombatInstance(characterService.getCharacter(guid));
-        // instances.put(guid, instance);
-        // instance.start();
     }
 
     private static Encounter generateMockEncounter() {
@@ -50,5 +40,17 @@ public class DungeonInstanceService {
         creature.setLevel(2);
         creatures.add(creature);
         return new Encounter(creatures);
+    }
+
+    public void combatAttack(String guid, Integer targetSlot, Integer spellSlot) {
+        Character character = characterService.getCharacter(guid);
+        // calc damage from spellslot
+        Creature c = character.getCurrentEncounter().getCreatureSlot(targetSlot);
+        c.setCurrentHp(c.getCurrentHp() - 5);
+        if (c.getCurrentHp() < 0L) {
+            c.setCurrentHp(0L);
+        }
+
+        characterService.saveCharacter(character);
     }
 }
