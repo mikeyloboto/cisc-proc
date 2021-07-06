@@ -1,12 +1,9 @@
 package com.evilbas.discproc.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-import com.evilbas.discproc.engine.CombatInstance;
 import com.evilbas.rslengine.character.Character;
 import com.evilbas.rslengine.creature.Creature;
 import com.evilbas.rslengine.creature.Encounter;
@@ -59,10 +56,10 @@ public class DungeonInstanceService {
                 }
             }
         }
-        creature.setCurrentHp(creature.getCurrentHp() - 5);
-        if (creature.getCurrentHp() < 0L) {
-            creature.setCurrentHp(0L);
-        }
+        result.setMessage("Dealt 5 damage to " + creature.getName() + ".");
+        Boolean death = creature.damage(5L);
+        if (death)
+            result.setMessage(result.getMessage() + "\n" + creature.getName() + " dies.");
 
         for (Creature c : character.getCurrentEncounter().getCreatures()) {
             if (c.getCurrentHp() > 0) {
@@ -71,15 +68,15 @@ public class DungeonInstanceService {
         }
 
         if (result.isFinished()) {
-            result.setMessage(character.getCurrentEncounter().getCreatureSlot(0).getName() + " defeated. Granted "
+            result.setMessage(result.getMessage() + "\nAll enemies are defeated. Granted "
                     + character.getCurrentEncounter().getEncounterExp(character) + "EXP.");
             character.addExperience(character.getCurrentEncounter().getEncounterExp(character));
+            character.getInventory().addItem(InventoryService.generateHealingItem());
+            character.getInventory().addItem(InventoryService.generateHarmItem());
             character.setCurrentEncounter(null);
-        } else {
-            result.setMessage("Dealt 5 damage to " + creature.getName() + ".");
-            result.setEncounter(character.getCurrentEncounter());
         }
 
+        result.setEncounter(character.getCurrentEncounter());
         characterService.saveCharacter(character);
 
         return result;

@@ -1,7 +1,6 @@
 package com.evilbas.discproc.controller;
 
 import com.evilbas.discproc.service.DungeonInstanceService;
-import com.evilbas.rslengine.creature.Encounter;
 import com.evilbas.rslengine.networking.CombatResultWrapper;
 
 import org.slf4j.Logger;
