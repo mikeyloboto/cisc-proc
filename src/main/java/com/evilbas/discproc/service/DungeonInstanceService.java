@@ -64,13 +64,15 @@ public class DungeonInstanceService {
             result.setMessage(character.getCurrentEncounter().getCreatureSlot(0).getName() + " defeated. Granted "
                     + character.getCurrentEncounter().getEncounterExp(character) + "EXP.");
             character.addExperience(character.getCurrentEncounter().getEncounterExp(character));
+            character.setCurrentEncounter(null);
         } else {
             result.setMessage(
                     "Dealt 5 damage to " + character.getCurrentEncounter().getCreatureSlot(0).getName() + ".");
+            result.setEncounter(character.getCurrentEncounter());
         }
 
         characterService.saveCharacter(character);
-        result.setEncounter(character.getCurrentEncounter());
+
         return result;
     }
 
