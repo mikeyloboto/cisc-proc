@@ -24,9 +24,8 @@ public class CombatController {
     }
 
     @GetMapping(value = "/combat/attack")
-    public String combatAttack(@RequestParam String guid, @RequestParam Integer targetSlot,
+    public Encounter combatAttack(@RequestParam String guid, @RequestParam Integer targetSlot,
             @RequestParam Integer spellSlot) {
-        dungeonInstanceService.combatAttack(guid, targetSlot, spellSlot);
-        return "Success";
+        return dungeonInstanceService.combatAttack(guid, targetSlot, spellSlot);
     }
 }

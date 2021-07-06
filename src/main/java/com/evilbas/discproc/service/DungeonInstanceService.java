@@ -43,7 +43,7 @@ public class DungeonInstanceService {
         return new Encounter(creatures);
     }
 
-    public void combatAttack(String guid, Integer targetSlot, Integer spellSlot) {
+    public Encounter combatAttack(String guid, Integer targetSlot, Integer spellSlot) {
         Character character = characterService.getCharacter(guid);
         // calc damage from spellslot
         Creature c = character.getCurrentEncounter().getCreatureSlot(targetSlot);
@@ -53,5 +53,6 @@ public class DungeonInstanceService {
         }
 
         characterService.saveCharacter(character);
+        return character.getCurrentEncounter();
     }
 }
