@@ -40,7 +40,7 @@ public class InventoryService {
         Character character = characterService.getCharacter(guid);
 
         for (ItemStack s : character.getInventory().getItems()) {
-            if (s.getItem().getIcon().equals(item) && s.getItem() instanceof ConsumableItem) {
+            if (s.getItem().getIcon().equals(item)) {
                 log.info("consumable item use");
                 useConsumableItem(character, s);
                 break;
