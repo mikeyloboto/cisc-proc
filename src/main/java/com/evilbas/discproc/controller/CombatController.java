@@ -1,6 +1,7 @@
 package com.evilbas.discproc.controller;
 
 import com.evilbas.discproc.service.DungeonInstanceService;
+import com.evilbas.rslengine.creature.Encounter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,8 @@ public class CombatController {
     DungeonInstanceService dungeonInstanceService;
 
     @GetMapping(value = "/combat")
-    public String startCombat(@RequestParam String guid) {
-        dungeonInstanceService.startCombat(guid);
-        return "Success";
+    public Encounter startCombat(@RequestParam String guid) {
+        return dungeonInstanceService.startCombat(guid);
     }
 
     @GetMapping(value = "/combat/attack")

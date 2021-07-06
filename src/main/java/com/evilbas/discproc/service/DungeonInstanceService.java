@@ -23,11 +23,12 @@ public class DungeonInstanceService {
     @Autowired
     CharacterService characterService;
 
-    public void startCombat(String guid) {
+    public Encounter startCombat(String guid) {
 
         Character character = characterService.getCharacter(guid);
         character.setCurrentEncounter(generateMockEncounter());
         characterService.saveCharacter(character);
+        return character.getCurrentEncounter();
     }
 
     private static Encounter generateMockEncounter() {
