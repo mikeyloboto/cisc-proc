@@ -41,6 +41,7 @@ public class InventoryService {
 
         for (ItemStack s : character.getInventory().getItems()) {
             if (s.getItem().getIcon().equals(item) && s.getItem() instanceof ConsumableItem) {
+                log.info("consumable item use");
                 useConsumableItem(character, s);
                 break;
             }
