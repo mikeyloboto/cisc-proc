@@ -2,6 +2,7 @@ package com.evilbas.discproc.controller;
 
 import com.evilbas.discproc.service.DungeonInstanceService;
 import com.evilbas.rslengine.creature.Encounter;
+import com.evilbas.rslengine.networking.CombatResultWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +20,12 @@ public class CombatController {
     DungeonInstanceService dungeonInstanceService;
 
     @GetMapping(value = "/combat", produces = "application/json")
-    public Encounter startCombat(@RequestParam String guid) {
+    public CombatResultWrapper startCombat(@RequestParam String guid) {
         return dungeonInstanceService.startCombat(guid);
     }
 
     @GetMapping(value = "/combat/attack", produces = "application/json")
-    public Encounter combatAttack(@RequestParam String guid, @RequestParam Integer targetSlot,
+    public CombatResultWrapper combatAttack(@RequestParam String guid, @RequestParam Integer targetSlot,
             @RequestParam Integer spellSlot) {
         return dungeonInstanceService.combatAttack(guid, targetSlot, spellSlot);
     }
