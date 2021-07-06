@@ -38,7 +38,7 @@ public class InventoryService {
     public InventoryInteractionWrapper useItem(String guid, String item) {
         InventoryInteractionWrapper result = new InventoryInteractionWrapper();
         Character character = characterService.getCharacter(guid);
-
+        log.info("item: {}", item);
         for (ItemStack s : character.getInventory().getItems()) {
             if (s.getItem().getIcon().equals(item)) {
                 log.info("consumable item use");
