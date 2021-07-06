@@ -26,7 +26,9 @@ public class DungeonInstanceService {
     public Encounter startCombat(String guid) {
 
         Character character = characterService.getCharacter(guid);
-        character.setCurrentEncounter(generateMockEncounter());
+        if (character.getCurrentEncounter() == null) {
+            character.setCurrentEncounter(generateMockEncounter());
+        }
         characterService.saveCharacter(character);
         return character.getCurrentEncounter();
     }
