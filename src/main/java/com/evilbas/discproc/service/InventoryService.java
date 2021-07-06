@@ -84,6 +84,9 @@ public class InventoryService {
                 break;
         }
         s.setAmount(s.getAmount() - 1);
+        if (s.getAmount() <= 0) {
+            character.getInventory().getItems().remove(s);
+        }
 
     }
 
