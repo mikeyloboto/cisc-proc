@@ -49,6 +49,16 @@ public class DungeonInstanceService {
         Character character = characterService.getCharacter(guid);
         // calc damage from spellslot
         Creature creature = character.getCurrentEncounter().getCreatureSlot(targetSlot);
+
+        // If target is dead, find next viable target
+        if (creature.getCurrentHp() == 0) {
+            for (Creature c : character.getCurrentEncounter().getCreatures()) {
+                if (c.getCurrentHp() > 0) {
+                    creature = c;
+                    break;
+                }
+            }
+        }
         creature.setCurrentHp(creature.getCurrentHp() - 5);
         if (creature.getCurrentHp() < 0L) {
             creature.setCurrentHp(0L);
@@ -66,8 +76,7 @@ public class DungeonInstanceService {
             character.addExperience(character.getCurrentEncounter().getEncounterExp(character));
             character.setCurrentEncounter(null);
         } else {
-            result.setMessage(
-                    "Dealt 5 damage to " + character.getCurrentEncounter().getCreatureSlot(0).getName() + ".");
+            result.setMessage("Dealt 5 damage to " + creature.getName() + ".");
             result.setEncounter(character.getCurrentEncounter());
         }
 
@@ -80,8 +89,8 @@ public class DungeonInstanceService {
 
         List<Creature> creatures = new ArrayList<>();
 
-        // Integer cNum = new Random().nextInt(3) + 1;
-        for (int i = 0; i < 1; i++) {
+        Integer cNum = new Random().nextInt(3) + 1;
+        for (int i = 0; i < cNum; i++) {
             Creature creature = new Creature();
             creature.setMaxHp(20L);
             creature.setCurrentHp(20L);
