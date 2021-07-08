@@ -45,6 +45,10 @@ public class DungeonInstanceService {
 
         Character character = characterService.getCharacter(guid);
         // calc damage from spellslot
+        if (character.getCurrentEncounter() == null) {
+            result.setMessage("Not fighting anyone currently");
+            return result;
+        }
         Creature creature = character.getCurrentEncounter().getCreatureSlot(targetSlot);
 
         // If target is dead, find next viable target
