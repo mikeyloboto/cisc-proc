@@ -2,12 +2,15 @@ package com.evilbas.discproc.controller;
 
 import com.evilbas.discproc.service.DungeonInstanceService;
 import com.evilbas.discproc.service.InventoryService;
+import com.evilbas.rslengine.networking.InventoryActionRequest;
 import com.evilbas.rslengine.networking.InventoryInteractionWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,13 +22,13 @@ public class InventoryController {
     @Autowired
     InventoryService inventoryService;
 
-    @GetMapping(value = "/inventory", produces = "application/json")
-    public InventoryInteractionWrapper listInventory(@RequestParam String guid) {
-        return inventoryService.listInventory(guid);
+    @PostMapping(value = "/inventory", produces = "application/json")
+    public InventoryInteractionWrapper listInventory(@RequestBody InventoryActionRequest request) {
+        return inventoryService.listInventory(request.getGuid());
     }
 
-    @GetMapping(value = "/inventory/use", produces = "application/json")
-    public InventoryInteractionWrapper combatAttack(@RequestParam String guid, @RequestParam String item) {
-        return inventoryService.useItem(guid, item);
+    @PostMapping(value = "/inventory/use", produces = "application/json")
+    public InventoryInteractionWrapper combatAttack(@RequestBody InventoryActionRequest request) {
+        return inventoryService.useItem(request.getGuid(), request.getItem());
     }
 }
