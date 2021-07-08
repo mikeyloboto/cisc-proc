@@ -18,12 +18,12 @@ public class CombatController {
     @Autowired
     DungeonInstanceService dungeonInstanceService;
 
-    @GetMapping(value = "/combat", produces = "application/json")
+    @GetMapping(value = "/combat", produces = "application/json", consumes = "application/json")
     public CombatResultWrapper startCombat(@RequestParam String guid) {
         return dungeonInstanceService.startCombat(guid);
     }
 
-    @GetMapping(value = "/combat/attack", produces = "application/json")
+    @GetMapping(value = "/combat/attack", produces = "application/json", consumes = "application/json")
     public CombatResultWrapper combatAttack(@RequestParam String guid, @RequestParam Integer targetSlot,
             @RequestParam Integer spellSlot) {
         return dungeonInstanceService.combatAttack(guid, targetSlot, spellSlot);
