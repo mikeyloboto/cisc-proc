@@ -31,9 +31,9 @@ public class DungeonInstanceService {
         if (character.getCurrentEncounter() == null) {
 
             character.setCurrentEncounter(generateEncounter(character.getCharacterLevel()));
-            result.setMessage("Starting fight with " + character.getCurrentEncounter().getCreatureSlot(0));
+            result.addMessage("Starting fight with " + character.getCurrentEncounter().getCreatureSlot(0));
         } else {
-            result.setMessage("Currently fighting " + character.getCurrentEncounter().getCreatureSlot(0));
+            result.addMessage("Currently fighting " + character.getCurrentEncounter().getCreatureSlot(0));
         }
         characterService.saveCharacter(character);
         result.setEncounter(character.getCurrentEncounter());
@@ -48,7 +48,7 @@ public class DungeonInstanceService {
         Character character = characterService.getCharacter(guid);
         // calc damage from spellslot
         if (character.getCurrentEncounter() == null) {
-            result.setMessage("Not fighting anyone currently");
+            result.addMessage("Not fighting anyone currently");
             return result;
         }
         Creature creature = character.getCurrentEncounter().getCreatureSlot(targetSlot);
@@ -62,10 +62,10 @@ public class DungeonInstanceService {
                 }
             }
         }
-        result.setMessage("Dealt 5 damage to " + creature.getName() + ".");
+        result.addMessage("Dealt 5 damage to " + creature.getName() + ".");
         Boolean death = creature.damage(5L);
         if (death)
-            result.setMessage(result.getMessage() + "\n" + creature.getName() + " dies.");
+            result.addMessage(creature.getName() + " dies.");
 
         for (Creature c : character.getCurrentEncounter().getCreatures()) {
             if (c.getCurrentHp() > 0) {
@@ -74,7 +74,7 @@ public class DungeonInstanceService {
         }
 
         if (result.isFinished()) {
-            result.setMessage(result.getMessage() + "\nAll enemies are defeated. Granted "
+            result.addMessage("All enemies are defeated. Granted "
                     + character.getCurrentEncounter().getEncounterExp(character) + "EXP.");
             character.addExperience(character.getCurrentEncounter().getEncounterExp(character));
             character.getInventory().addItem(InventoryService.generateHealingItem());
