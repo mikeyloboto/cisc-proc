@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MonsterController {
 
-    private static final Logger log = LoggerFactory.getLogger(CombatController.class);
+    private static final Logger log = LoggerFactory.getLogger(MonsterController.class);
 
     @Autowired
     MonsterService monsterService;

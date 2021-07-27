@@ -1,5 +1,7 @@
 package com.evilbas.discproc.service;
 
+import java.util.List;
+
 import com.evilbas.discproc.util.Constants;
 import com.evilbas.rslengine.character.Character;
 
@@ -36,5 +38,12 @@ public class CharacterService {
 
         return getCharacter(character.getCharacterGuid());
 
+    }
+
+    public List<Character> getAllCharacters() {
+        List<Character> characters = mongoTemplate.findAll(Character.class, Constants.MONGO_CHARACTERS_SCHEMA);
+
+        log.debug("character: {}", characters);
+        return characters;
     }
 }
