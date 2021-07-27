@@ -17,10 +17,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class DungeonInstanceService {
     private static final Logger log = LoggerFactory.getLogger(DungeonInstanceService.class);
-    // private Map<String, CombatInstance> instances;
 
     @Autowired
     CharacterService characterService;
+
+    @Autowired
+    MonsterService monsterService;
 
     public CombatResultWrapper startCombat(String guid) {
         CombatResultWrapper result = new CombatResultWrapper();
@@ -28,7 +30,7 @@ public class DungeonInstanceService {
         Character character = characterService.getCharacter(guid);
         if (character.getCurrentEncounter() == null) {
 
-            character.setCurrentEncounter(generateMockEncounter());
+            character.setCurrentEncounter(generateEncounter(character.getCharacterLevel()));
             result.setMessage("Starting fight with " + character.getCurrentEncounter().getCreatureSlot(0));
         } else {
             result.setMessage("Currently fighting " + character.getCurrentEncounter().getCreatureSlot(0));
@@ -84,6 +86,17 @@ public class DungeonInstanceService {
         characterService.saveCharacter(character);
 
         return result;
+    }
+
+    private Encounter generateEncounter(Integer playerLevel) {
+
+        List<Creature> creatures = new ArrayList<>();
+
+        Integer cNum = new Random().nextInt(3) + 1;
+        for (int i = 0; i < cNum; i++) {
+            creatures.add(monsterService.getRandomScaledCreature(playerLevel));
+        }
+        return new Encounter(creatures);
     }
 
     private static Encounter generateMockEncounter() {
