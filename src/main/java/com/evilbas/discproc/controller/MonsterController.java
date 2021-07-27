@@ -23,17 +23,17 @@ public class MonsterController {
     @Autowired
     MonsterService monsterService;
 
-    @GetMapping(value = "/monster/", produces = "application/json")
+    @GetMapping(value = "/monster", produces = "application/json")
     public List<Creature> getAllMonsters() {
         return monsterService.getCreatures();
     }
 
-    @DeleteMapping(value = "/monster/", produces = "application/json")
+    @DeleteMapping(value = "/monster", produces = "application/json")
     public List<Creature> deleteMonster(@RequestParam String name) {
         return monsterService.deleteByName(name);
     }
 
-    @PostMapping(value = "/monster/", produces = "application/json")
+    @PostMapping(value = "/monster", produces = "application/json")
     public List<Creature> addMonster(@RequestBody Creature creature) {
         return monsterService.addCreature(creature);
     }
