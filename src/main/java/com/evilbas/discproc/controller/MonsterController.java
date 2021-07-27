@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("monster")
+@RestController
 public class MonsterController {
 
     private static final Logger log = LoggerFactory.getLogger(CombatController.class);
@@ -23,17 +23,17 @@ public class MonsterController {
     @Autowired
     MonsterService monsterService;
 
-    @GetMapping(value = "/", produces = "application/json")
+    @GetMapping(value = "/monster/", produces = "application/json")
     public List<Creature> getAllMonsters() {
         return monsterService.getCreatures();
     }
 
-    @DeleteMapping(value = "/", produces = "application/json")
+    @DeleteMapping(value = "/monster/", produces = "application/json")
     public List<Creature> deleteMonster(@RequestParam String name) {
         return monsterService.deleteByName(name);
     }
 
-    @PostMapping(value = "/", produces = "application/json")
+    @PostMapping(value = "/monster/", produces = "application/json")
     public List<Creature> addMonster(@RequestBody Creature creature) {
         return monsterService.addCreature(creature);
     }
