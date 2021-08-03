@@ -37,8 +37,12 @@ public class MonsterService {
     public Creature getRandomScaledCreature(Integer level) {
         Creature baseCreature = pickRandomCreature();
         var scaleLevel = level + randomProvider.nextInt(7) - 3;
+        if (scaleLevel < 1) {
+            scaleLevel = 1;
+        }
 
-        baseCreature.setMaxHp(baseCreature.getMaxHp() + Math.round(5 * scaleLevel * (baseCreature.getMaxHp() / 10f)));
+        baseCreature.setMaxHp((long) baseCreature.getDifficultyFactor()
+                + Math.round(5 * scaleLevel * (baseCreature.getDifficultyFactor() / 10f)));
         baseCreature.setCurrentHp(baseCreature.getMaxHp());
 
         baseCreature.setLevel(scaleLevel);
@@ -50,7 +54,7 @@ public class MonsterService {
     public List<Creature> getCreatures() {
         List<Creature> creatures = mongoTemplate.findAll(Creature.class, Constants.MONGO_CREATURES_SCHEMA);
 
-        log.debug("character: {}", creatures);
+        log.debug("creatures: {}", creatures);
         return creatures;
     }
 
