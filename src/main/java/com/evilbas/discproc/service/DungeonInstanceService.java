@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.evilbas.rslengine.ability.SpellType;
 import com.evilbas.rslengine.character.Character;
 import com.evilbas.rslengine.creature.Creature;
 import com.evilbas.rslengine.creature.Encounter;
 import com.evilbas.rslengine.damage.DamageModifier;
+import com.evilbas.rslengine.item.ItemWeapon;
+import com.evilbas.rslengine.item.property.ItemRarity;
 import com.evilbas.rslengine.networking.CombatResultWrapper;
 import com.evilbas.rslengine.util.CombatUtil;
 
@@ -65,6 +68,11 @@ public class DungeonInstanceService {
                     break;
                 }
             }
+        }
+        // TODO: REMOVE THIS!!!!!
+
+        if (character.getEquippedWeapon() == null) {
+            character.setEquippedWeapon(generateOPWeapon());
         }
 
         // Calculate Damage
@@ -149,5 +157,16 @@ public class DungeonInstanceService {
             creatures.add(creature);
         }
         return new Encounter(creatures);
+    }
+
+    private static ItemWeapon generateOPWeapon() {
+        ItemWeapon w = new ItemWeapon();
+        w.setName("OP Sword of the Dragon");
+        w.setStackable(false);
+        w.setRarity(ItemRarity.LEGENDARY);
+        w.setBaseDamage(10L);
+        w.addModifier(new DamageModifier(SpellType.FIRE, 25L));
+        w.addModifier(new DamageModifier(SpellType.CHAOS, 5L));
+        return w;
     }
 }
