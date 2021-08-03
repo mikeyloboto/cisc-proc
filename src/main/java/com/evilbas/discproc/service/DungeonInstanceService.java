@@ -7,7 +7,9 @@ import java.util.Random;
 import com.evilbas.rslengine.character.Character;
 import com.evilbas.rslengine.creature.Creature;
 import com.evilbas.rslengine.creature.Encounter;
+import com.evilbas.rslengine.damage.DamageModifier;
 import com.evilbas.rslengine.networking.CombatResultWrapper;
+import com.evilbas.rslengine.util.CombatUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +44,8 @@ public class DungeonInstanceService {
 
     public CombatResultWrapper combatAttack(String guid, Integer targetSlot, Integer spellSlot) {
 
+        // Turn beginning
+
         CombatResultWrapper result = new CombatResultWrapper();
         result.setFinished(true);
 
@@ -62,8 +66,37 @@ public class DungeonInstanceService {
                 }
             }
         }
-        result.addMessage("Dealt 5 damage to " + creature.getName() + ".");
-        Boolean death = creature.damage(5L);
+
+        // Calculate Damage
+
+        List<DamageModifier> modifiers = new ArrayList<>();
+
+        if (character.getEquippedWeapon() == null) {
+            modifiers.add(CombatUtil.getUnarmedDamageModifier());
+        } else {
+            modifiers.add(CombatUtil.convertPhysicalDamageModifier(character.getEquippedWeapon().getBaseDamage()));
+            if (character.getEquippedWeapon().getModifiers() != null) {
+                modifiers.addAll(character.getEquippedWeapon().getModifiers());
+            }
+
+            if (character.getEquippedWeapon().getTempModifiers() != null) {
+                modifiers.addAll(character.getEquippedWeapon().getTempModifiers());
+                for (DamageModifier dm : character.getEquippedWeapon().getTempModifiers()) {
+                    dm.setTemporaryRemaining(dm.getTemporaryRemaining() - 1);
+                    if (dm.getTemporaryRemaining() == 0) {
+                        character.getEquippedWeapon().getTempModifiers().remove(dm);
+                    }
+                }
+            }
+        }
+
+        Boolean death = creature.damage(modifiers);
+
+        for (DamageModifier m : modifiers) {
+            result.addMessage("Dealt " + m.getAmount() + " " + m.getDamageType().getReadableName(false) + " damage to "
+                    + creature.getName() + ".");
+        }
+
         if (death)
             result.addMessage(creature.getName() + " dies.");
 
@@ -77,8 +110,11 @@ public class DungeonInstanceService {
             result.addMessage("All enemies are defeated. Granted "
                     + character.getCurrentEncounter().getEncounterExp(character) + "EXP.");
             character.addExperience(character.getCurrentEncounter().getEncounterExp(character));
+
+            // TODO: Remove temp prizes
             character.getInventory().addItem(InventoryService.generateHealingItem());
             character.getInventory().addItem(InventoryService.generateHarmItem());
+
             character.setCurrentEncounter(null);
         }
 
@@ -91,8 +127,8 @@ public class DungeonInstanceService {
     private Encounter generateEncounter(Integer playerLevel) {
 
         List<Creature> creatures = new ArrayList<>();
-
-        Integer cNum = new Random().nextInt(3) + 1;
+        Integer enemiesLimit = (int) Math.floor((double) playerLevel / 3.0d);
+        Integer cNum = new Random().nextInt(enemiesLimit) + 1;
         for (int i = 0; i < cNum; i++) {
             creatures.add(monsterService.getRandomScaledCreature(playerLevel));
         }
