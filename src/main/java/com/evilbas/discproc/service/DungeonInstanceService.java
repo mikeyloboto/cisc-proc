@@ -109,12 +109,16 @@ public class DungeonInstanceService {
             }
         }
 
+        // Enemy turn
+
         Boolean charDeath = false;
 
         if (!result.isFinished()) {
             Creature attacker = character.getViableTarget();
-            charDeath = character.damage(new DamageModifier(SpellType.PHYSICAL, 5L));
-            result.addMessage(attacker.getName() + " dealt 5 damage.");
+            DamageModifier modifier = new DamageModifier(SpellType.PHYSICAL, CombatUtil.calculateDamage(attacker));
+            charDeath = character.damage(modifier);
+            result.addMessage(attacker.getName() + " dealt " + modifier.getAmount() + " "
+                    + modifier.getDamageType().getReadableName(false) + " damage.");
             result.setFinished(charDeath);
         }
 
