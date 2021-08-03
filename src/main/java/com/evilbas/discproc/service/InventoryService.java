@@ -2,6 +2,7 @@ package com.evilbas.discproc.service;
 
 import com.evilbas.rslengine.ability.SpellType;
 import com.evilbas.rslengine.character.Character;
+import com.evilbas.rslengine.creature.Creature;
 import com.evilbas.rslengine.item.ConsumableItem;
 import com.evilbas.rslengine.item.Inventory;
 import com.evilbas.rslengine.item.Item;
@@ -80,6 +81,13 @@ public class InventoryService {
                             character.getViableTarget().damage(item.getValue());
                         }
                         break;
+                    case MULTI_ENEMY:
+                        if (character.getCurrentEncounter() != null) {
+                            for (Creature m : character.getCurrentEncounter().getCreatures()) {
+                                m.damage(item.getValue());
+                            }
+                        }
+                        break;
 
                 }
                 break;
@@ -112,6 +120,19 @@ public class InventoryService {
         item.setTarget(ItemTarget.ENEMY);
         item.setIcon("💣");
         item.setValue(20L);
+        item.setRarity(ItemRarity.COMMON);
+        item.setType(SpellType.FIRE);
+        return item;
+    }
+
+    public static Item generateAoeItem() {
+        ConsumableItem item = new ConsumableItem();
+        item.setName("Fire Powder");
+        item.setStackable(true);
+        item.setEffect(ItemEffect.HARM);
+        item.setTarget(ItemTarget.MULTI_ENEMY);
+        item.setIcon("💥");
+        item.setValue(10L);
         item.setRarity(ItemRarity.COMMON);
         item.setType(SpellType.FIRE);
         return item;

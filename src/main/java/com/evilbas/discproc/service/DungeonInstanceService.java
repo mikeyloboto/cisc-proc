@@ -109,7 +109,16 @@ public class DungeonInstanceService {
             }
         }
 
-        if (result.isFinished()) {
+        Boolean charDeath = false;
+
+        if (!result.isFinished()) {
+            Creature attacker = character.getViableTarget();
+            charDeath = character.damage(new DamageModifier(SpellType.PHYSICAL, 5L));
+            result.addMessage(attacker.getName() + " dealt 5 damage.");
+            result.setFinished(charDeath);
+        }
+
+        if (result.isFinished() && !charDeath) {
             result.addMessage("All enemies are defeated. Granted "
                     + character.getCurrentEncounter().getEncounterExp(character) + "EXP.");
             character.addExperience(character.getCurrentEncounter().getEncounterExp(character));
@@ -117,6 +126,14 @@ public class DungeonInstanceService {
             // TODO: Remove temp prizes
             character.getInventory().addItem(InventoryService.generateHealingItem());
             character.getInventory().addItem(InventoryService.generateHarmItem());
+            character.getInventory().addItem(InventoryService.generateAoeItem());
+
+            character.setCurrentEncounter(null);
+        }
+
+        else if (result.isFinished() && charDeath) {
+            result.addMessage("You have fainted and woke up in the nearby tavern.");
+            character.setCurrentHp(character.getMaxHp());
 
             character.setCurrentEncounter(null);
         }
