@@ -69,11 +69,6 @@ public class DungeonInstanceService {
                 }
             }
         }
-        // TODO: REMOVE THIS!!!!!
-
-        if (character.getEquippedWeapon() == null) {
-            character.setEquippedWeapon(generateOPWeapon());
-        }
 
         // Calculate Damage
 
