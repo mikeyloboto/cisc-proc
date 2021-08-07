@@ -1,5 +1,6 @@
 package com.evilbas.discproc.service;
 
+import com.evilbas.discproc.util.Constants;
 import com.evilbas.rslengine.ability.Spell;
 import com.evilbas.rslengine.ability.Spellbook;
 import com.evilbas.rslengine.character.Character;
@@ -9,6 +10,9 @@ import com.evilbas.rslengine.networking.SpellbookInteractionWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +21,9 @@ public class SpellService {
 
     @Autowired
     CharacterService characterService;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public SpellbookInteractionWrapper listSpells(String guid) {
         SpellbookInteractionWrapper result = new SpellbookInteractionWrapper();
@@ -100,5 +107,22 @@ public class SpellService {
             character.setMp(0L);
         }
         return s.getSpellName() + " cast.";
+    }
+
+    public Spell createSpell(Spell spell) {
+        mongoTemplate.save(spell, Constants.MONGO_SPELLS_SCHEMA);
+        return getSpell(spell.getIcon());
+    }
+
+    public Spell getSpell(String icon) {
+        Query query = new Query(Criteria.where("icon").is(icon));
+        return mongoTemplate.findOne(query, Spell.class);
+    }
+
+    public void deleteSpell(String icon) {
+
+        Query query = new Query(Criteria.where("icon").is(icon));
+        mongoTemplate.remove(query, Spell.class, Constants.MONGO_SPELLS_SCHEMA);
+
     }
 }

@@ -1,20 +1,20 @@
 package com.evilbas.discproc.service;
 
-import com.evilbas.rslengine.ability.property.Effect;
-import com.evilbas.rslengine.ability.property.SpellType;
-import com.evilbas.rslengine.ability.property.Target;
+import com.evilbas.discproc.util.Constants;
 import com.evilbas.rslengine.character.Character;
 import com.evilbas.rslengine.creature.Creature;
 import com.evilbas.rslengine.item.ConsumableItem;
 import com.evilbas.rslengine.item.Inventory;
 import com.evilbas.rslengine.item.Item;
 import com.evilbas.rslengine.item.ItemStack;
-import com.evilbas.rslengine.item.property.ItemRarity;
 import com.evilbas.rslengine.networking.InventoryInteractionWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +23,9 @@ public class InventoryService {
 
     @Autowired
     CharacterService characterService;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public InventoryInteractionWrapper listInventory(String guid) {
         InventoryInteractionWrapper result = new InventoryInteractionWrapper();
@@ -96,6 +99,23 @@ public class InventoryService {
         if (s.getAmount() <= 0) {
             character.getInventory().getItems().remove(s);
         }
+
+    }
+
+    public Item createItem(Item item) {
+        mongoTemplate.save(item, Constants.MONGO_ITEMS_SCHEMA);
+        return getItem(item.getIcon());
+    }
+
+    public Item getItem(String icon) {
+        Query query = new Query(Criteria.where("icon").is(icon));
+        return mongoTemplate.findOne(query, Item.class);
+    }
+
+    public void deleteItem(String icon) {
+
+        Query query = new Query(Criteria.where("icon").is(icon));
+        mongoTemplate.remove(query, Item.class, Constants.MONGO_ITEMS_SCHEMA);
 
     }
 
