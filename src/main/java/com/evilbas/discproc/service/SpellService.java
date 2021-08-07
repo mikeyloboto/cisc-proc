@@ -37,7 +37,7 @@ public class SpellService {
         for (Spell s : character.getSpellbook().getSpells()) {
             if (s.getIcon().equals(spell)) {
                 log.info("spell use");
-                useSpell(character, s);
+                result.addMessage(useSpell(character, s));
                 break;
             }
         }
@@ -47,7 +47,10 @@ public class SpellService {
         return result;
     }
 
-    private void useSpell(Character character, Spell s) {
+    private String useSpell(Character character, Spell s) {
+        if (character.getMp() == 0L) {
+            return "No mana to cast " + s.getSpellName();
+        }
         switch (s.getEffect()) {
             case HEAL:
                 switch (s.getTarget()) {
@@ -83,5 +86,10 @@ public class SpellService {
                 }
                 break;
         }
+        character.setMp(character.getMp() - s.getManaCost());
+        if (character.getMp() < 0L) {
+            character.setMp(0L);
+        }
+        return s.getSpellName() + " cast.";
     }
 }

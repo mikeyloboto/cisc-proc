@@ -127,7 +127,7 @@ public class DungeonInstanceService {
             result.addMessage("All enemies are defeated. Granted "
                     + character.getCurrentEncounter().getEncounterExp(character) + "EXP.");
             character.addExperience(character.getCurrentEncounter().getEncounterExp(character));
-
+            character.setMp(character.getMaxMp());
             // TODO: Remove temp prizes
             character.getInventory().addItem(ConsumableItem.generateHealingItem());
             character.getInventory().addItem(ConsumableItem.generateHarmItem());
