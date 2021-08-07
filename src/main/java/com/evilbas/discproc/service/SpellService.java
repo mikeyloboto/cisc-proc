@@ -48,6 +48,7 @@ public class SpellService {
     }
 
     private String useSpell(Character character, Spell s) {
+        log.info("spell: {}", s);
         if (character.getMp() == 0L) {
             return "No mana to cast " + s.getSpellName();
         }
@@ -60,6 +61,13 @@ public class SpellService {
                     case ENEMY:
                         if (character.getViableTarget() != null) {
                             character.getViableTarget().heal(s.getModifiers());
+                        }
+                        break;
+                    case MULTI_ENEMY:
+                        if (character.getCurrentEncounter() != null) {
+                            for (Creature m : character.getCurrentEncounter().getCreatures()) {
+                                m.heal(s.getModifiers());
+                            }
                         }
                         break;
 
@@ -87,6 +95,7 @@ public class SpellService {
                 break;
         }
         character.setMp(character.getMp() - s.getManaCost());
+        log.info(" subtracting mana, mana remaining: {}", character.getMp());
         if (character.getMp() < 0L) {
             character.setMp(0L);
         }
