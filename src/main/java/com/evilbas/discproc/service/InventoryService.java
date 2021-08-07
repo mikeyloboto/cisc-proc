@@ -1,15 +1,15 @@
 package com.evilbas.discproc.service;
 
-import com.evilbas.rslengine.ability.SpellType;
+import com.evilbas.rslengine.ability.property.Effect;
+import com.evilbas.rslengine.ability.property.SpellType;
+import com.evilbas.rslengine.ability.property.Target;
 import com.evilbas.rslengine.character.Character;
 import com.evilbas.rslengine.creature.Creature;
 import com.evilbas.rslengine.item.ConsumableItem;
 import com.evilbas.rslengine.item.Inventory;
 import com.evilbas.rslengine.item.Item;
 import com.evilbas.rslengine.item.ItemStack;
-import com.evilbas.rslengine.item.property.ItemEffect;
 import com.evilbas.rslengine.item.property.ItemRarity;
-import com.evilbas.rslengine.item.property.ItemTarget;
 import com.evilbas.rslengine.networking.InventoryInteractionWrapper;
 
 import org.slf4j.Logger;
@@ -99,42 +99,4 @@ public class InventoryService {
 
     }
 
-    public static Item generateHealingItem() {
-        ConsumableItem item = new ConsumableItem();
-        item.setName("Health Potion");
-        item.setStackable(true);
-        item.setEffect(ItemEffect.HEAL);
-        item.setTarget(ItemTarget.SELF);
-        item.setIcon("🧪");
-        item.setValue(20L);
-        item.setRarity(ItemRarity.COMMON);
-        item.setType(SpellType.NATURE);
-        return item;
-    }
-
-    public static Item generateHarmItem() {
-        ConsumableItem item = new ConsumableItem();
-        item.setName("Firebomb");
-        item.setStackable(true);
-        item.setEffect(ItemEffect.HARM);
-        item.setTarget(ItemTarget.ENEMY);
-        item.setIcon("💣");
-        item.setValue(20L);
-        item.setRarity(ItemRarity.COMMON);
-        item.setType(SpellType.FIRE);
-        return item;
-    }
-
-    public static Item generateAoeItem() {
-        ConsumableItem item = new ConsumableItem();
-        item.setName("Fire Powder");
-        item.setStackable(true);
-        item.setEffect(ItemEffect.HARM);
-        item.setTarget(ItemTarget.MULTI_ENEMY);
-        item.setIcon("💥");
-        item.setValue(10L);
-        item.setRarity(ItemRarity.COMMON);
-        item.setType(SpellType.FIRE);
-        return item;
-    }
 }

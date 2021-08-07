@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.evilbas.rslengine.ability.SpellType;
+import com.evilbas.rslengine.ability.property.SpellType;
 import com.evilbas.rslengine.character.Character;
 import com.evilbas.rslengine.creature.Creature;
 import com.evilbas.rslengine.creature.Encounter;
 import com.evilbas.rslengine.damage.DamageModifier;
+import com.evilbas.rslengine.item.ConsumableItem;
 import com.evilbas.rslengine.item.ItemWeapon;
 import com.evilbas.rslengine.item.property.ItemRarity;
 import com.evilbas.rslengine.networking.CombatResultWrapper;
@@ -128,9 +129,9 @@ public class DungeonInstanceService {
             character.addExperience(character.getCurrentEncounter().getEncounterExp(character));
 
             // TODO: Remove temp prizes
-            character.getInventory().addItem(InventoryService.generateHealingItem());
-            character.getInventory().addItem(InventoryService.generateHarmItem());
-            character.getInventory().addItem(InventoryService.generateAoeItem());
+            character.getInventory().addItem(ConsumableItem.generateHealingItem());
+            character.getInventory().addItem(ConsumableItem.generateHarmItem());
+            character.getInventory().addItem(ConsumableItem.generateAoeItem());
 
             character.setCurrentEncounter(null);
         }
@@ -152,6 +153,7 @@ public class DungeonInstanceService {
 
         List<Creature> creatures = new ArrayList<>();
         Integer enemiesLimit = (int) Math.floor((double) playerLevel / 3.0d);
+        enemiesLimit = (enemiesLimit < 1) ? 1 : enemiesLimit;
         Integer cNum = new Random().nextInt(enemiesLimit) + 1;
         for (int i = 0; i < cNum; i++) {
             creatures.add(monsterService.getRandomScaledCreature(playerLevel));
